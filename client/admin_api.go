@@ -44,8 +44,9 @@ func (svr *Service) healthz(w http.ResponseWriter, r *http.Request) {
 func (svr *Service) apiReload(w http.ResponseWriter, r *http.Request) {
 	res := GeneralResponse{Code: 200}
 
-	log.Info("api request [/api/reload]")
+	log.Info("api request [/api/reload] !!!")
 	defer func() {
+		log.Info("api response [/api/reload], code [%d]", res.Code)
 		log.Info("api response [/api/reload], code [%d]", res.Code)
 		w.WriteHeader(res.Code)
 		if len(res.Msg) > 0 {
@@ -55,7 +56,6 @@ func (svr *Service) apiReload(w http.ResponseWriter, r *http.Request) {
 
 	_, pxyCfgs, visitorCfgs, err := config.ParseClientConfig(svr.cfgFile)
 	if err != nil {
-		res.Code = 400
 		res.Msg = err.Error()
 		log.Warn("reload frpc proxy config error: %s", res.Msg)
 		return
